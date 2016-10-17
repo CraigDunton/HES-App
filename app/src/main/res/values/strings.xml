@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">HES App</string>
     <string name="action_settings">Settings</string>
+    <string name="service_events">Service Events</string>
+    <string name="hes_events">HES Events</string>
+    <string name="main_description">Hopefully Rachel can put text in a Google Sheet and we can make it appear here. \n\n Hello Children! Events A and B are new! check it out! Craig is NOT cool!</string>
+    <string name="hes_calendar">HES Calendar</string>
 </resources>
