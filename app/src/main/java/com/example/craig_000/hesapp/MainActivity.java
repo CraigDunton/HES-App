@@ -1,8 +1,10 @@
 package com.example.craig_000.hesapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -31,12 +33,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void eventButtonClick(View view){
-        Toast.makeText(getApplicationContext(),"Show HES Events",Toast.LENGTH_SHORT);
-        Log.i("Info", "This button will show HES Events on a calendar!");
+        Intent intent = new Intent(this,HESEvents.class);
+        startActivity(intent);
     }
 
     public void serviceButtonClick(View view){
-        Log.i("Info","This button will show service events on a cooler calendar!");
+        Intent intent = new Intent(this, ServiceEvents.class);
+        startActivity(intent);
     }
 
     @Override
