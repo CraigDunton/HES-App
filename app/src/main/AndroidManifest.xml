@@ -24,11 +24,11 @@
         </activity>
         <activity
             android:name=".ServiceEvents"
-            android:label="HES App">
+            android:label="Service Events">
         </activity>
         <activity
             android:name=".HESEvents"
-            android:label="HES App">
+            android:label="HES Events">
         </activity>
     </application>
 
