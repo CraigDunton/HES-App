@@ -46,25 +46,6 @@ public class HESEvents extends AppCompatActivity{
         setContentView(R.layout.hesevents);
 
 
-//        HttpTransport transport = AndroidHttp.newCompatibleTransport();
-//        JsonFactory factory = JacksonFactory.getDefaultInstance();
-//        GoogleAccountCredential credential = GoogleAccountCredential.usingOAuth2(
-//                getApplicationContext(), Arrays.asList(CalendarScopes.CALENDAR_READONLY))
-//                .setBackOff(new ExponentialBackOff());
-//
-//
-//        Calendar service = new Calendar.Builder(transport,factory,credential)
-//                .setApplicationName("HES App")
-//                .build();
-//
-//
-//        try {
-//            com.google.api.services.calendar.model.Calendar cal = service.calendars().get("ereed1272@gmail.com").execute();
-//            Log.i("Calendar Info", cal.getDescription());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         Event one = new Event("10/22/2016","2:00pm","Clean up trash");
         Event two = new Event("10/24/2016","1:30pm","Touch Ricky");
         Event three = new Event("10/30/2016","9:00am","Turn up LMAO");

@@ -20,16 +20,20 @@ public class ServiceEvents extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_events);
 
+        Event one = new Event("10/22/2016","2:00pm","Clean up trash");
+        Event two = new Event("10/24/2016","1:30pm","Touch Ricky");
+        Event three = new Event("10/30/2016","9:00am","Turn up LMAO");
+
+        final ArrayList<Event> events = new ArrayList<>();
+        events.add(one);
+        events.add(two);
+        events.add(three);
+
+        final EventAdapter adapter = new EventAdapter(this, events);
+
+
         ListView list = (ListView)findViewById(R.id.myList);
-
-        final ArrayList<String> events = new ArrayList<>();
-        events.add("Example 1");
-        events.add("Example 2");
-        events.add("Example 3");
-
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, events);
         list.setAdapter(adapter);
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
