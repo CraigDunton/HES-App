@@ -15,7 +15,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HES Calendar"
+        android:text="@string/hes_calendar"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hopefully Rachel can put text in a Google Sheet and we can make it appear here. \n\n Hello Children! Events A and B are new! check it out! Craig is cool!"
+            android:text="@string/main_description"
             android:id="@+id/newsText"
             android:layout_gravity="center_horizontal"
             android:minHeight="150dp"
@@ -45,7 +45,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HES Events"
+            android:text="@string/hes_events"
             android:id="@+id/eventButton"
             android:layout_gravity="center_horizontal"
             android:minWidth="500dp"
@@ -54,7 +54,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Service Events"
+            android:text="@string/service_events"
             android:id="@+id/CSButton"
             android:layout_gravity="center_horizontal"
             android:minWidth="500dp"
