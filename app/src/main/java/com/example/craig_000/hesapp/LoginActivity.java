@@ -3,6 +3,7 @@ package com.example.craig_000.hesapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +34,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Result;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +42,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.ProviderQueryResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +83,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     Log.d("PLS", "onAuthStateChanged:signed_in:" + user.getUid());
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
+
                 } else {
                     // User is signed out
                     Log.d("PLS", "onAuthStateChanged:signed_out");
@@ -99,9 +106,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void signIn(View view){
-        String email = mEmailView.getText().toString();
-        String pass = mPasswordView.getText().toString();
-        Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
+        final String email = mEmailView.getText().toString();
+        final String pass = mPasswordView.getText().toString();
+        if(email.isEmpty() || pass.isEmpty() ){
+            Toast.makeText(LoginActivity.this, "One or more text boxes is empty",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
+        final ProgressDialog signInDialog = ProgressDialog.show(this,"", "Signing in...",true, false);
         mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -110,12 +122,47 @@ public class LoginActivity extends AppCompatActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
+                    signInDialog.dismiss();
                     Log.w("LOGIN", "signInWithEmail:failed", task.getException());
-                    Toast.makeText(LoginActivity.this, "AUTH FAILED",
-                            Toast.LENGTH_SHORT).show();
+                    Task<ProviderQueryResult> result = mFirebaseAuth.fetchProvidersForEmail(email);
+
+                    result.addOnCompleteListener(LoginActivity.this, new OnCompleteListener<ProviderQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                            if(task.getResult().getProviders().isEmpty()){
+                                final ProgressDialog signUpDialog = ProgressDialog.show(LoginActivity.this,"", "Signing up...",true, false);
+                                mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if(!task.isSuccessful()){
+                                            Log.w("SIGNING UP","IT MESSED UP BOYS", task.getException());
+                                            signUpDialog.dismiss();
+                                        }else{
+                                            //Toast.makeText(LoginActivity.this, "SIGN UP WORKED", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                                            startActivity(intent);
+                                            signUpDialog.dismiss();
+                                        }
+                                    }
+                                });
+                            } else{
+                                Toast.makeText(LoginActivity.this, "YOU ENTERED THE WRONG PASSWORD HOMIE", Toast.LENGTH_SHORT).show();
+                            }
+                            Log.w("TASK COMPLETE", task.getResult().getProviders().toString());
+
+                        }
+                    });
+
+                    Log.w("FETCH PROVIDERS","Task should be complete by now");
+//                    Toast.makeText(LoginActivity.this, "AUTH FAILED",
+//                            Toast.LENGTH_SHORT).show();
                 } else{
-                    Toast.makeText(LoginActivity.this, "AUTH WORKED", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "AUTH WORKED", Toast.LENGTH_SHORT).show();
+                    signInDialog.dismiss();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                     startActivity(intent);
                 }
 
