@@ -7,7 +7,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by craig_000 on 10/2/2016.
@@ -20,14 +27,39 @@ public class ServiceEvents extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.service_events);
 
-        Event one = new Event("10/22/2016","2:00pm","Clean up trash");
-        Event two = new Event("10/24/2016","1:30pm","Touch Ricky");
-        Event three = new Event("10/30/2016","9:00am","Turn up LMAO");
-
         final ArrayList<Event> events = new ArrayList<>();
-        events.add(one);
-        events.add(two);
-        events.add(three);
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference hesEventsRef = database.getReference("cs_events");
+
+        hesEventsRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
+                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title")));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         final EventAdapter adapter = new EventAdapter(this, events);
 
