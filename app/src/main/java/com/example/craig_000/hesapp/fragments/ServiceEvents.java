@@ -1,12 +1,15 @@
 package com.example.craig_000.hesapp.fragments;
+
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.craig_000.hesapp.Event;
-import com.example.craig_000.hesapp.EventAdapter;
+import com.example.craig_000.hesapp.adapters.EventAdapter;
 import com.example.craig_000.hesapp.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,15 +24,17 @@ import java.util.Map;
  * Created by craig_000 on 10/2/2016.
  */
 
-public class ServiceEvents extends AppCompatActivity{
+public class ServiceEvents extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.service_events);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        View v = inflater.inflate(R.layout.service_events,container, false);
+
+        ListView list = (ListView) v.findViewById(R.id.myList);
         final ArrayList<Event> events = new ArrayList<>();
-
+        final EventAdapter adapter = new EventAdapter(getActivity(), events);
+        list.setAdapter(adapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference hesEventsRef = database.getReference("cs_events");
@@ -62,11 +67,7 @@ public class ServiceEvents extends AppCompatActivity{
             }
         });
 
-        final EventAdapter adapter = new EventAdapter(this, events);
 
-
-        ListView list = (ListView)findViewById(R.id.myList);
-        list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -75,6 +76,8 @@ public class ServiceEvents extends AppCompatActivity{
                 adapter.notifyDataSetChanged();
             }
         });
+
+        return v;
     }
 
 }
