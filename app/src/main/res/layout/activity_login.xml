@@ -82,7 +82,8 @@
                 android:background="@android:color/darker_gray"
                 android:gravity="center_vertical|center_horizontal|center"
                 android:translationX="35dp"
-                android:fontFamily="monospace" />
+                android:fontFamily="monospace"
+                android:onClick="signIn"/>
 
         </LinearLayout>
     </ScrollView>
