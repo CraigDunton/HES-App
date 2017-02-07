@@ -78,15 +78,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-//    public void eventButtonClick(View view){
-//        Intent intent = new Intent(this,HESEvents.class);
-//        startActivity(intent);
-//    }
-//
-//    public void serviceButtonClick(View view){
-//        Intent intent = new Intent(this, ServiceEvents.class);
-//        startActivity(intent);
-//    }
+
+    public void profileButtonClick(View view){
+        Intent intent = new Intent(this, Profile.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

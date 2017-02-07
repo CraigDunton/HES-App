@@ -40,4 +40,15 @@
         android:layout_marginTop="104dp">
     </android.support.v4.view.ViewPager>
 
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="58dp"
+        android:layout_height="53dp"
+        android:clickable="true"
+        app:fabSize="mini"
+        android:src="@android:drawable/btn_star"
+        android:id="@+id/floatingActionButton"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="16dp"
+        android:onClick="profileButtonClick" />
+
 </android.support.design.widget.CoordinatorLayout>
