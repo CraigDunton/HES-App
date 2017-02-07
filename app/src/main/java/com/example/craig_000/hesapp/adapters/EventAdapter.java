@@ -1,4 +1,4 @@
-package com.example.craig_000.hesapp;
+package com.example.craig_000.hesapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.example.craig_000.hesapp.Event;
+import com.example.craig_000.hesapp.R;
 
 import java.util.ArrayList;
 

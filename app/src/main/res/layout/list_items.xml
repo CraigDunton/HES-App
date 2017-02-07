@@ -9,6 +9,15 @@
     android:paddingEnd="16dp"
     android:paddingBottom="16dp">
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Title"
+        android:layout_weight="1"
+        android:textStyle="normal|bold"
+        android:textSize="18sp" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -18,10 +27,8 @@
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/Title"
-            android:layout_weight="1"
-            android:textStyle="normal|bold"
-            android:textSize="18sp" />
+            android:id="@+id/Date"
+            android:layout_weight="1" />
 
         <TextView
             android:text="TextView"
@@ -31,12 +38,5 @@
             android:layout_weight="1"
             android:gravity="right" />
     </LinearLayout>
-
-    <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/Date"
-        android:layout_weight="1" />
 
 </LinearLayout>
