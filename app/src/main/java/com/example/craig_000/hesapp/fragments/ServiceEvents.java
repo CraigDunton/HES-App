@@ -2,11 +2,15 @@ package com.example.craig_000.hesapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.PopupWindowCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.craig_000.hesapp.Event;
 import com.example.craig_000.hesapp.adapters.EventAdapter;
@@ -29,7 +33,7 @@ public class ServiceEvents extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.service_events,container, false);
+        final View v = inflater.inflate(R.layout.service_events,container, false);
 
         ListView list = (ListView) v.findViewById(R.id.myList);
         final ArrayList<Event> events = new ArrayList<>();
@@ -72,6 +76,17 @@ public class ServiceEvents extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Popup window
+                TextView mText = new TextView(v.getContext());
+                mText.setText("Testing");
+                PopupWindow mPop = new PopupWindow(mText, 100,100);
+                mPop.showAtLocation(v, Gravity.CENTER,0,0);
+                mPop.update(50, 50, 320, 90);
+                //on OK, add to calendar if not already
+
+                //add to firebase if not already
+
                 events.remove(position);
                 adapter.notifyDataSetChanged();
             }
