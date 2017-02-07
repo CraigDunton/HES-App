@@ -1,8 +1,10 @@
 package com.example.craig_000.hesapp.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.PopupWindowCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,20 +77,32 @@ public class ServiceEvents extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 //Popup window
-                TextView mText = new TextView(v.getContext());
-                mText.setText("Testing");
-                PopupWindow mPop = new PopupWindow(mText, 100,100);
-                mPop.showAtLocation(v, Gravity.CENTER,0,0);
-                mPop.update(50, 50, 320, 90);
+                View desc = (View) v.findViewById(R.id.myList);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
+                alertDialogBuilder.setTitle("Sign up for this event?");
+                alertDialogBuilder.setMessage("This will add the event to your calendar as well");
+                alertDialogBuilder.setPositiveButton("YES",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        events.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("NO",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = alertDialogBuilder.create();
+                alert.show();
                 //on OK, add to calendar if not already
-
                 //add to firebase if not already
 
-                events.remove(position);
-                adapter.notifyDataSetChanged();
             }
         });
 
