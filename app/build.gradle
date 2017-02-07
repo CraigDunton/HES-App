@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.example.craig_000.hesapp"
@@ -30,6 +30,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
+
     compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'pub.devrel:easypermissions:0.2.1'
@@ -40,6 +41,12 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
     compile 'com.google.firebase:firebase-database:10.0.1'
+
+    
+ 
+    compile 'com.android.support:support-v4:23.4.0'
+
+
     testCompile 'junit:junit:4.12'
 }
 

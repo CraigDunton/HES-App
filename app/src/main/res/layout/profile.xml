@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="168dp">
+
+        <ImageView
+            android:layout_width="95dp"
+            android:layout_height="107dp"
+            android:src="@drawable/common_google_signin_btn_icon_dark"
+            android:id="@+id/imageView"
+            android:layout_gravity="center_vertical" />
+
+        <TextView
+            android:text="HES Events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="250dp" />
+
+        <TextView
+            android:text="CS Events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView10"
+            android:layout_marginTop="50dp"
+            android:layout_gravity="fill_horizontal"
+            android:layout_marginLeft="250dp" />
+
+        <TextView
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView11"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="150dp" />
+
+        <TextView
+            android:text="Major"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView12"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="100dp" />
+    </FrameLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="325dp"
+        android:id="@+id/list" />
+
+</LinearLayout>
