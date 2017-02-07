@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public void profileButtonClick(View view){
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
