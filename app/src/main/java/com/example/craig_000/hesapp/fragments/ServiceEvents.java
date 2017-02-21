@@ -3,6 +3,7 @@ package com.example.craig_000.hesapp.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,7 +75,6 @@ public class ServiceEvents extends Fragment {
             }
         });
 
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
@@ -105,7 +106,6 @@ public class ServiceEvents extends Fragment {
 
             }
         });
-
         return v;
     }
 
