@@ -111,9 +111,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        if(mViewPager != null && mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthListener);
+        if(mViewPager != null && mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override

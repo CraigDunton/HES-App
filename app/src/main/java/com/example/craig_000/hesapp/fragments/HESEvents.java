@@ -1,7 +1,10 @@
 package com.example.craig_000.hesapp.fragments;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,12 @@ import java.util.Map;
 
 public class HESEvents extends Fragment {
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.hesevents,container, false);
+        final View v = inflater.inflate(R.layout.hesevents,container, false);
 
         ListView list = (ListView) v.findViewById(R.id.myList);
         final ArrayList<Event> events = new ArrayList<>();
@@ -71,9 +76,32 @@ public class HESEvents extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                events.remove(position);
-                adapter.notifyDataSetChanged();
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                //Popup window
+                View desc = (View) v.findViewById(R.id.myList);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(v.getContext());
+                alertDialogBuilder.setTitle("Sign up for this event?");
+                alertDialogBuilder.setMessage("This will add the event to your calendar as well");
+                alertDialogBuilder.setPositiveButton("YES",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        events.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("NO",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = alertDialogBuilder.create();
+                alert.show();
+                //on OK, add to calendar if not already
+                //add to firebase if not already
+
             }
         });
 
