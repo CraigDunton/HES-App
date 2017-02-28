@@ -28,6 +28,12 @@
             android:name=".HESEvents"
             android:label="HES Events"></activity>
         <activity
+            android:name=".Profile"
+            android:label="Profile"></activity>
+        <activity
+            android:name=".History"
+            android:label="History"></activity>
+        <activity
             android:name=".LoginActivity"
             android:label="HES App"
             android:noHistory="true">
