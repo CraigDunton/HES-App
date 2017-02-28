@@ -80,6 +80,14 @@
                 android:fontFamily="monospace"
                 android:onClick="signIn"/>
 
+            <Button
+                android:text="Sign Up"
+                android:layout_width="101dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/sign_up"
+                android:onClick="signUp"
+                android:layout_marginLeft="125dp" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

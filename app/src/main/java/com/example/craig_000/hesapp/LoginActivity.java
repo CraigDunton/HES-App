@@ -107,6 +107,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
     }
 
+    public void signUp(View view){
+        Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void signIn(View view){
         final String email = mEmailView.getText().toString();
         final String pass = mPasswordView.getText().toString();
