@@ -46,9 +46,13 @@ package com.example.craig_000.hesapp;
     import com.google.firebase.auth.FirebaseAuth;
     import com.google.firebase.auth.FirebaseUser;
     import com.google.firebase.auth.ProviderQueryResult;
+    import com.google.firebase.database.DatabaseReference;
+    import com.google.firebase.database.FirebaseDatabase;
 
     import java.util.ArrayList;
+    import java.util.HashMap;
     import java.util.List;
+    import java.util.Map;
 
     import static android.Manifest.permission.READ_CONTACTS;
 
@@ -125,65 +129,44 @@ package com.example.craig_000.hesapp;
             final String last = mLastNameView.getText().toString();
             final String major = mMajorView.getText().toString();
             final String confirm = mConfirmView.getText().toString();
+            final String birthday = mBirthdayView.getText().toString();
             if(email.isEmpty() || pass.isEmpty() || first.isEmpty() || last.isEmpty() || major.isEmpty()||confirm.isEmpty() ){
                 Toast.makeText(com.example.craig_000.hesapp.SignUp.this, "One or more text boxes is empty",Toast.LENGTH_SHORT).show();
                 return;
             }
-            //Toast.makeText(LoginActivity.this, "Logging in...", Toast.LENGTH_SHORT).show();
-            final ProgressDialog signInDialog = ProgressDialog.show(this,"", "Creating account...",true, false);
-            mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
+            final ProgressDialog signUpDialog = ProgressDialog.show(com.example.craig_000.hesapp.SignUp.this,"", "Signing up...",true, false);
+            mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(com.example.craig_000.hesapp.SignUp.this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    Log.d("SIGNUP", "signUpWithEmail:onComplete:" + task.isSuccessful());
-                    // If sign in fails, display a message to the user. If sign in succeeds
-                    // the auth state listener will be notified and logic to handle the
-                    // signed in user can be handled in the listener
-                    if (!task.isSuccessful()) {
-                        signInDialog.dismiss();
-                        Log.w("SIGNUP", "signUpWithEmail:failed", task.getException());
-                        Task<ProviderQueryResult> result = mFirebaseAuth.fetchProvidersForEmail(email);
+                    if(!task.isSuccessful()){
+                        Log.w("SIGNING UP","IT MESSED UP BOYS", task.getException());
+                        signUpDialog.dismiss();
+                    }else{
+                        //Toast.makeText(LoginActivity.this, "SIGN UP WORKED", Toast.LENGTH_SHORT).show();
 
-                        result.addOnCompleteListener(com.example.craig_000.hesapp.SignUp.this, new OnCompleteListener<ProviderQueryResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                                if(task.getResult().getProviders().isEmpty() && pass.equals(confirm)){
-                                    final ProgressDialog signUpDialog = ProgressDialog.show(com.example.craig_000.hesapp.SignUp.this,"", "Signing up...",true, false);
-                                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(com.example.craig_000.hesapp.SignUp.this, new OnCompleteListener<AuthResult>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<AuthResult> task) {
-                                            if(!task.isSuccessful()){
-                                                Log.w("SIGNING UP","IT MESSED UP BOYS", task.getException());
-                                                signUpDialog.dismiss();
-                                            }else{
-                                                //Toast.makeText(LoginActivity.this, "SIGN UP WORKED", Toast.LENGTH_SHORT).show();
+                        //Add information to firebase for the user
 
-                                                Intent intent = new Intent(com.example.craig_000.hesapp.SignUp.this, MainActivity.class);
-                                                //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                                startActivity(intent);
-                                                signUpDialog.dismiss();
-                                            }
-                                        }
-                                    });
-                                } else{
-                                    Toast.makeText(com.example.craig_000.hesapp.SignUp.this, "Your passwords don't match or that user exists", Toast.LENGTH_SHORT).show();
-                                }
-                                Log.w("TASK COMPLETE", task.getResult().getProviders().toString());
+                        Log.d("ADDIN' TAH FIREBASE", "ADDING STUFF TO FIREBASE");
 
-                            }
-                        });
 
-                        Log.w("FETCH PROVIDERS","Task should be complete by now");
-//                    Toast.makeText(LoginActivity.this, "AUTH FAILED",
-//                            Toast.LENGTH_SHORT).show();
-                    } else{
-                        //Toast.makeText(LoginActivity.this, "AUTH WORKED", Toast.LENGTH_SHORT).show();
-                        signInDialog.dismiss();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference userRef = database.getReference("users");
+                        DatabaseReference newChildRef = userRef.child(mFirebaseAuth.getCurrentUser().getUid());
+
+                        HashMap<String, String> newUserData = new HashMap<String, String>();
+                        newUserData.put("birthday", birthday);
+                        newUserData.put("name", first + " " + last);
+                        newUserData.put("email", email);
+                        newUserData.put("major", major);
+
+                        newChildRef.setValue(newUserData);
+
                         Intent intent = new Intent(com.example.craig_000.hesapp.SignUp.this, MainActivity.class);
                         //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                         startActivity(intent);
+                        signUpDialog.dismiss();
                     }
-
-                    // ...
                 }
             });
         }
