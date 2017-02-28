@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.example.craig_000.hesapp.Event;
 import com.example.craig_000.hesapp.adapters.EventAdapter;
 import com.example.craig_000.hesapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,24 +36,28 @@ import java.util.Map;
 
 public class ServiceEvents extends Fragment {
 
+    FirebaseAuth mFirebaseAuth;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.service_events,container, false);
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
-        ListView list = (ListView) v.findViewById(R.id.myList);
+        ListView list = (ListView) v.findViewById(R.id.list);
         final ArrayList<Event> events = new ArrayList<>();
         final EventAdapter adapter = new EventAdapter(getActivity(), events);
         list.setAdapter(adapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference hesEventsRef = database.getReference("cs_events");
+        final DatabaseReference csSignUpEventsRef = database.getReference("cs_signed_up").child(mFirebaseAuth.getCurrentUser().getUid());
 
         hesEventsRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title")));
+                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"), (String)map.get("description"),(String)map.get("location"),dataSnapshot.getKey()));
             }
 
             @Override
@@ -88,7 +94,21 @@ public class ServiceEvents extends Fragment {
                 alertDialogBuilder.setPositiveButton("YES",new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //here we need to add the event to the users signed up events firebase
                         dialog.dismiss();
+
+                        Map<String, String> userData = new HashMap<String, String>();
+                        Event eventToSignUp = events.get(position);
+                        DatabaseReference signUpRef = csSignUpEventsRef.child(eventToSignUp.getID());
+
+                        userData.put("date", eventToSignUp.getDate());
+                        userData.put("description", eventToSignUp.getDescription());
+                        userData.put("location", eventToSignUp.getLocation());
+                        userData.put("time", eventToSignUp.getTime());
+                        userData.put("title", eventToSignUp.getTitle());
+
+                        signUpRef.setValue(userData);
+
                         events.remove(position);
                         adapter.notifyDataSetChanged();
                     }

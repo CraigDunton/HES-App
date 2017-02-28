@@ -9,11 +9,17 @@ public class Event {
     private String date;
     private String time;
     private String title;
+    private String description;
+    private String location;
+    private String id;
 
-    public Event(String date, String time, String title){
+    public Event(String date, String time, String title, String description, String location, String id){
         this.date = date;
         this.time = time;
         this.title = title;
+        this.description = description;
+        this.location = location;
+        this.id = id;
     }
 
     public String getDate(){
@@ -24,6 +30,15 @@ public class Event {
     }
     public String getTitle(){
         return this.title;
+    }
+    public String getDescription(){
+        return this.description;
+    }
+    public String getLocation(){
+        return this.location;
+    }
+    public String getID(){
+        return this.id;
     }
 
 }

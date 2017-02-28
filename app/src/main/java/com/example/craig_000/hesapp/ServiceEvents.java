@@ -36,7 +36,7 @@ public class ServiceEvents extends AppCompatActivity{
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title")));
+                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"), (String)map.get("description"), (String)map.get("location"), dataSnapshot.getKey()));
             }
 
             @Override

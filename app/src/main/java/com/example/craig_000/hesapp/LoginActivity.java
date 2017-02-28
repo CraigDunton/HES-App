@@ -132,7 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<ProviderQueryResult> task) {
                             if(task.getResult().getProviders().isEmpty()){
+                                //No account with this email is created, please throw toast
                                 final ProgressDialog signUpDialog = ProgressDialog.show(LoginActivity.this,"", "Signing up...",true, false);
+                                //lines 138-153 to go to sign up activity. No longer needed here
                                 mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -150,6 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                                     }
                                 });
                             } else{
+                                //Wrong Password
                                 Toast.makeText(LoginActivity.this, "YOU ENTERED THE WRONG PASSWORD HOMIE", Toast.LENGTH_SHORT).show();
                             }
                             Log.w("TASK COMPLETE", task.getResult().getProviders().toString());
