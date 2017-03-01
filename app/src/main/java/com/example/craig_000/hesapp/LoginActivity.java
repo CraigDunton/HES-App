@@ -107,6 +107,12 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
     }
 
+    public void signUp(View view){
+        Intent intent = new Intent(this, SignUp.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void signIn(View view){
         final String email = mEmailView.getText().toString();
         final String pass = mPasswordView.getText().toString();
@@ -132,25 +138,8 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<ProviderQueryResult> task) {
                             if(task.getResult().getProviders().isEmpty()){
-                                //No account with this email is created, please throw toast
-                                final ProgressDialog signUpDialog = ProgressDialog.show(LoginActivity.this,"", "Signing up...",true, false);
-                                //lines 138-153 to go to sign up activity. No longer needed here
-                                mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        if(!task.isSuccessful()){
-                                            Log.w("SIGNING UP","IT MESSED UP BOYS", task.getException());
-                                            signUpDialog.dismiss();
-                                        }else{
-                                            //Toast.makeText(LoginActivity.this, "SIGN UP WORKED", Toast.LENGTH_SHORT).show();
 
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                                            startActivity(intent);
-                                            signUpDialog.dismiss();
-                                        }
-                                    }
-                                });
+                                Toast.makeText(LoginActivity.this, "YOU DON'T GOT AN ACCOUNT. Sign up please", Toast.LENGTH_SHORT).show();
                             } else{
                                 //Wrong Password
                                 Toast.makeText(LoginActivity.this, "YOU ENTERED THE WRONG PASSWORD HOMIE", Toast.LENGTH_SHORT).show();
