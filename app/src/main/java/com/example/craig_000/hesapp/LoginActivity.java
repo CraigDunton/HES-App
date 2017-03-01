@@ -138,8 +138,10 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<ProviderQueryResult> task) {
                             if(task.getResult().getProviders().isEmpty()){
+
                                 Toast.makeText(LoginActivity.this, "YOU DON'T GOT AN ACCOUNT. Sign up please", Toast.LENGTH_SHORT).show();
                             } else{
+                                //Wrong Password
                                 Toast.makeText(LoginActivity.this, "YOU ENTERED THE WRONG PASSWORD HOMIE", Toast.LENGTH_SHORT).show();
                             }
                             Log.w("TASK COMPLETE", task.getResult().getProviders().toString());
