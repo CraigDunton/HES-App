@@ -30,6 +30,11 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <com.antonyt.infiniteviewpager.InfiniteViewPager
+        android:id="@+id/months_infinite_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <GridView
         android:id="@+id/weekday_gridview"
         android:layout_width="match_parent"
@@ -38,10 +43,5 @@
         android:numColumns="7"
         android:stretchMode="columnWidth" >
     </GridView>
-
-    <com.antonyt.infiniteviewpager.InfiniteViewPager
-        android:id="@+id/months_infinite_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
 </LinearLayout>

@@ -59,7 +59,7 @@
         android:id="@+id/calendarButton"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        android:onClick="profileCalendarClick" />
+        android:onClick="calendarButtonClick" />
 
 
 </android.support.design.widget.CoordinatorLayout>
