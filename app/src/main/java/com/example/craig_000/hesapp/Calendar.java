@@ -40,7 +40,7 @@ public class Calendar extends AppCompatActivity {
         Date greenDate = cal.getTime();
 
         if (caldroidFragment != null) {
-            ColorDrawable blue = new ColorDrawable(getResources().getColor(R.color.caldroid_holo_blue_light));
+            ColorDrawable blue = new ColorDrawable(Color.BLUE);
             ColorDrawable green = new ColorDrawable(Color.GREEN);
             caldroidFragment.setBackgroundDrawableForDate(blue, blueDate);
             caldroidFragment.setBackgroundDrawableForDate(green, greenDate);

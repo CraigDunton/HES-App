@@ -35,7 +35,7 @@ public class ServiceEvents extends Fragment {
 
         final View v = inflater.inflate(R.layout.service_events,container, false);
 
-        ListView list = (ListView) v.findViewById(R.id.list);
+        ListView list = (ListView) v.findViewById(R.id.myList);
         final ArrayList<Event> events = new ArrayList<>();
         final EventAdapter adapter = new EventAdapter(getActivity(), events);
         list.setAdapter(adapter);
