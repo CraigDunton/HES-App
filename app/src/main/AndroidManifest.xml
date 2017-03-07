@@ -43,6 +43,7 @@
             android:name=".CalendarViewExampleActivity"
             android:label="@string/title_activity_calendar_view_example"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".GoogleCalendarApi" />
     </application>
 
 </manifest>
