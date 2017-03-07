@@ -6,22 +6,28 @@
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/calendar1"
+        android:id="@+id/calendar_title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/calendar_left_arrow"
-            style="?styleCaldroidLeftArrow" />
+            style="?styleCaldroidLeftArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/calendar_month_year_textview"
-            style="?styleCaldroidMonthName"/>
+            style="?styleCaldroidMonthName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/calendar_right_arrow"
-            style="?styleCaldroidRightArrow" />
+            style="?styleCaldroidRightArrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <GridView
