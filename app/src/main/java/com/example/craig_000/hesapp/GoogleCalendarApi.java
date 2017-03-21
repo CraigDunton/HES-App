@@ -1,6 +1,7 @@
 package com.example.craig_000.hesapp;
 
 import com.google.android.gms.common.ConnectionResult;
+import android.Manifest;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
@@ -299,12 +300,12 @@ public class GoogleCalendarApi extends Activity
         final int connectionStatusCode =
                 apiAvailability.isGooglePlayServicesAvailable(this);
         if (apiAvailability.isUserResolvableError(connectionStatusCode)) {
-            showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
+           // showGooglePlayServicesAvailabilityErrorDialog(connectionStatusCode);
         }
     }
 
 
-    /**
+   /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
      * @param connectionStatusCode code describing the presence (or lack of)
@@ -314,12 +315,11 @@ public class GoogleCalendarApi extends Activity
             final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                GoogleCalendar.this,
+                GoogleCalendarApi.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
     }
-
     /**
      * An asynchronous task that handles the Google Calendar API call.
      * Placing the API calls in their own task ensures the UI stays responsive.
@@ -428,13 +428,13 @@ public class GoogleCalendarApi extends Activity
             mProgress.hide();
             if (mLastError != null) {
                 if (mLastError instanceof GooglePlayServicesAvailabilityIOException) {
-                    showGooglePlayServicesAvailabilityErrorDialog(
-                            ((GooglePlayServicesAvailabilityIOException) mLastError)
-                                    .getConnectionStatusCode());
+                   // showGooglePlayServicesAvailabilityErrorDialog(
+                     //       ((GooglePlayServicesAvailabilityIOException) mLastError)
+                      //              .getConnectionStatusCode());
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            GoogleCalendar.REQUEST_AUTHORIZATION);
+                            GoogleCalendarApi.REQUEST_AUTHORIZATION);
                 } else {
                     mOutputText.setText("The following error occurred:\n"
                             + mLastError.getMessage());

@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <uses-library android:name="com.google.android.calendar" />
 
@@ -35,7 +35,6 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,6 +43,7 @@
             android:label="@string/title_activity_calendar_view_example"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".GoogleCalendarApi" />
+        <meta-data android:name="com.google.android.calendar.v2.API_KEY" android:value="AIzaSyCF82zlg39cHCFqa5YO13ccI9v1L7sGKNw" />
     </application>
 
 </manifest>
