@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public void profileButtonClick(View view){
         Intent intent = new Intent(this, Profile.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -110,9 +111,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        if(mViewPager != null && mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthListener);
+        if(mViewPager != null && mViewPager.getAdapter() != null) {
+            mViewPager.getAdapter().notifyDataSetChanged();
+        }
     }
 
     @Override
