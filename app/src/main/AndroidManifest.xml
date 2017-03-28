@@ -25,9 +25,6 @@
             android:name=".ServiceEvents"
             android:label="Service Events"></activity>
         <activity
-            android:name=".HESEvents"
-            android:label="HES Events"></activity>
-        <activity
             android:name=".Profile"
             android:label="Profile"></activity>
         <activity

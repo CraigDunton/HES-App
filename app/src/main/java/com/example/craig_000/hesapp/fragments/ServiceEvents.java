@@ -3,8 +3,6 @@ package com.example.craig_000.hesapp.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,26 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 
 import com.example.craig_000.hesapp.Event;
+
 import com.example.craig_000.hesapp.MainActivity;
 import com.example.craig_000.hesapp.adapters.EventAdapter;
 import com.example.craig_000.hesapp.R;
 import com.google.api.client.util.Data;
+
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,43 +39,37 @@ import java.util.Map;
 
 public class ServiceEvents extends Fragment {
 
-    FirebaseAuth mFirebaseAuth;
+    private ListView list;
+    private ArrayList<Event> events;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference serviceEventsRef;
+    private EventAdapter mEventAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.service_events,container, false);
+
+        list = (ListView) v.findViewById(R.id.myList);
+        events = new ArrayList<>();
+
         mFirebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        serviceEventsRef = database.getReference("cs_events");
+        final DatabaseReference serviceSignUpEventsRef = database.getReference("cs_signed_up").child(mFirebaseAuth.getCurrentUser().getUid());
 
-        ListView list = (ListView) v.findViewById(R.id.list);
-        final ArrayList<Event> events = new ArrayList<>();
-        final EventAdapter adapter = new EventAdapter(getActivity(), events);
-        list.setAdapter(adapter);
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference hesEventsRef = database.getReference("cs_events");
-        final DatabaseReference csSignUpEventsRef = database.getReference("cs_signed_up").child(mFirebaseAuth.getCurrentUser().getUid());
-
-        hesEventsRef.addChildEventListener(new ChildEventListener() {
+        serviceEventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"), (String)map.get("description"),(String)map.get("location"),dataSnapshot.getKey()));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> serviceEvents = dataSnapshot.getChildren().iterator();
+                while (serviceEvents.hasNext()){
+                    DataSnapshot eventData = serviceEvents.next();
+                    Event event = eventData.getValue(Event.class);
+                    events.add(event);
+                }
+                mEventAdapter = new EventAdapter(getActivity(), events);
+                list.setAdapter(mEventAdapter);
             }
 
             @Override
@@ -85,6 +77,38 @@ public class ServiceEvents extends Fragment {
 
             }
         });
+
+
+//        serviceEventsRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//                Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
+//                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"),(String)map.get("description"),(String)map.get("location"), dataSnapshot.getKey()));
+//                mEventAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
@@ -98,6 +122,7 @@ public class ServiceEvents extends Fragment {
                 alertDialogBuilder.setMessage("This will add the event to your calendar as well");
                 alertDialogBuilder.setPositiveButton("YES",new DialogInterface.OnClickListener(){
                     @Override
+
                     public void onClick(final DialogInterface dialog, int which) {
                         //here we need to add the event to the users signed up events firebase
                         //check to see if event is already added
@@ -172,6 +197,7 @@ public class ServiceEvents extends Fragment {
 //                                }
 //                            });
 //                        }
+
                     }
                 });
                 alertDialogBuilder.setNegativeButton("NO",new DialogInterface.OnClickListener(){
@@ -187,7 +213,9 @@ public class ServiceEvents extends Fragment {
 
             }
         });
+
         return v;
     }
+
 
 }

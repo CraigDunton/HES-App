@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -33,42 +34,37 @@ import java.util.Map;
 
 public class HESEvents extends Fragment {
 
-
+    private ListView list;
+    private ArrayList<Event> events;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference hesEventsRef;
+    private EventAdapter mEventAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         final View v = inflater.inflate(R.layout.hesevents,container, false);
 
-        ListView list = (ListView) v.findViewById(R.id.myList);
-        final ArrayList<Event> events = new ArrayList<>();
+        list = (ListView) v.findViewById(R.id.myList);
+        events = new ArrayList<>();
 
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference hesEventsRef = database.getReference("hes_events");
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        hesEventsRef = database.getReference("hes_events");
         final DatabaseReference HESSignUpEventsRef = database.getReference("hes_signed_up").child(mFirebaseAuth.getCurrentUser().getUid());
 
-
-        hesEventsRef.addChildEventListener(new ChildEventListener() {
+        hesEventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"),(String)map.get("description"),(String)map.get("location"), dataSnapshot.getKey()));
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterator<DataSnapshot> hesEvents = dataSnapshot.getChildren().iterator();
+                while (hesEvents.hasNext()){
+                    DataSnapshot eventData = hesEvents.next();
+                    Event event = eventData.getValue(Event.class);
+                    events.add(event);
+                }
+                mEventAdapter = new EventAdapter(getActivity(), events);
+                list.setAdapter(mEventAdapter);
             }
 
             @Override
@@ -77,9 +73,38 @@ public class HESEvents extends Fragment {
             }
         });
 
-        final EventAdapter adapter = new EventAdapter(getActivity(), events);
 
-        list.setAdapter(adapter);
+//        hesEventsRef.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//
+//                Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
+//                events.add(new Event((String)map.get("date"), (String)map.get("time"), (String)map.get("title"),(String)map.get("description"),(String)map.get("location"), dataSnapshot.getKey()));
+//                mEventAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
             @Override
