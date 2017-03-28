@@ -117,23 +117,51 @@ public class HESEvents extends Fragment {
                 alertDialogBuilder.setMessage("This will add the event to your calendar as well");
                 alertDialogBuilder.setPositiveButton("YES",new DialogInterface.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        //here we need to add the event to the users signed up events firebase
+                        //check to see if event is already added
+                        final Event eventToSignUp = events.get(position);
+                        HESSignUpEventsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if(!dataSnapshot.hasChild(eventToSignUp.getID())){
+                                    Log.i("REF TEST", "child "+ eventToSignUp.getID() + " doesn't exist");
+                                    DatabaseReference signUpRef = HESSignUpEventsRef.child(eventToSignUp.getID());
+                                    DatabaseReference errorCheck = HESSignUpEventsRef.child("for_testing_pls");
+                                    dialog.dismiss();
+                                    Log.i("REF TEST", "toString: " + errorCheck.toString() + "\nKey: " + errorCheck.getKey());
+                                    Map<String, String> userData = new HashMap<String, String>();
 
-                        Map<String, String> userData = new HashMap<String, String>();
-                        Event eventToSignUp = events.get(position);
-                        DatabaseReference signUpRef = HESSignUpEventsRef.child(eventToSignUp.getID());
+                                    userData.put("date", eventToSignUp.getDate());
+                                    userData.put("description", eventToSignUp.getDescription());
+                                    userData.put("location", eventToSignUp.getLocation());
+                                    userData.put("time", eventToSignUp.getTime());
+                                    userData.put("title", eventToSignUp.getTitle());
 
-                        userData.put("date", eventToSignUp.getDate());
-                        userData.put("description", eventToSignUp.getDescription());
-                        userData.put("location", eventToSignUp.getLocation());
-                        userData.put("time", eventToSignUp.getTime());
-                        userData.put("title", eventToSignUp.getTitle());
+                                    signUpRef.setValue(userData);
 
-                        signUpRef.setValue(userData);
 
-                        events.remove(position);
-                        mEventAdapter.notifyDataSetChanged();
+                                } else {
+                                    Log.i("REF TEST", "child "+ eventToSignUp.getID() + " exists");
+                                    AlertDialog.Builder errorD = new AlertDialog.Builder(v.getContext());
+                                    errorD.setTitle("Sign up error");
+                                    errorD.setMessage("You've already signed up for this event");
+                                    errorD.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    AlertDialog alertE = errorD.create();
+                                    alertE.show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
                 alertDialogBuilder.setNegativeButton("NO",new DialogInterface.OnClickListener(){
