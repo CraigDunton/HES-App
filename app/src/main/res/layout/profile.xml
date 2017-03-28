@@ -13,6 +13,7 @@
             android:layout_height="107dp"
             android:src="@drawable/common_google_signin_btn_icon_dark"
             android:id="@+id/imageView"
+            android:onClick="setPicture"
             android:layout_gravity="center_vertical" />
 
         <TextView
