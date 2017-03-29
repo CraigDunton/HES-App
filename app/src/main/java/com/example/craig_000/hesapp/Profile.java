@@ -1,6 +1,11 @@
 package com.example.craig_000.hesapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -143,4 +148,10 @@ public class Profile extends AppCompatActivity {
         finish();
 
     }
+    public void setPicture(View view){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, 1);
+    }
+
 }
